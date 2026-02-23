@@ -18,7 +18,7 @@ import { Pots } from '../pots.interface';
   templateUrl: './potsmodal.component.html',
   styleUrls: ['./potsmodal.component.scss'],
 })
-export class PotsmodalComponent implements OnInit, OnChanges {
+export class PotsmodalComponent implements OnChanges {
   @Input() isVisible: boolean = false;
   @Input() selectedPot!: Pots;
   @Input() selectedPotName: string = '';
@@ -94,8 +94,6 @@ export class PotsmodalComponent implements OnInit, OnChanges {
 
   constructor() {}
 
-  ngOnInit(): void {}
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['selectedPot'] && this.selectedPot) {
       this.editPot = { ...this.selectedPot };
@@ -127,9 +125,6 @@ export class PotsmodalComponent implements OnInit, OnChanges {
   }
 
   selectTheme(theme: any) {
-    const oldTheme =
-      this.mode === 'edit' ? this.editPot.theme : this.addPot.theme;
-
     if (this.mode === 'edit') {
       this.editPot.theme = theme.value;
       this.editPot.themeColor = theme.value;

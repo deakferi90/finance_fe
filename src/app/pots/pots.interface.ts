@@ -7,5 +7,4 @@ export interface Pots {
   total: number;
   theme: string;
   animatedValue?: number;
-  deleted?: boolean;
 }
