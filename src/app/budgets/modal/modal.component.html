@@ -10,183 +10,187 @@
       </button>
     </div>
     <p class="text-[#696868] mb-3">{{ content }}</p>
-    @if (title.includes('Delete')) {
-    <button
-      class="mt-[20px] w-[100%] py-[14px] bg-[#C94736] text-white rounded-lg"
-      (click)="confirmDelete()"
-    >
-      {{ deleteMsg }}
-    </button>
-    <button class="mt-[20px] text-[#696868] w-[100%]" (click)="cancelDelete()">
-      {{ cancel }}
-    </button>
-    } @else if (title === 'Add New Budget') {
+    @if (title.includes("Delete")) {
+      <button
+        class="mt-[20px] w-[100%] py-[14px] bg-[#C94736] text-white rounded-lg"
+        (click)="confirmDelete()"
+      >
+        {{ deleteMsg }}
+      </button>
+      <button
+        class="mt-[20px] text-[#696868] w-[100%]"
+        (click)="cancelDelete()"
+      >
+        {{ cancel }}
+      </button>
+    } @else if (title === "Add New Budget") {
+      <span class="text-[#696868] mt-2">Budget Category</span>
+      <div class="custom-dropdown-container mb-2">
+        <div class="dropdown-selected" (click)="toggleDropdown('category')">
+          <span *ngIf="selectedCategory; else noCategory">
+            {{ selectedCategory.category }}
+          </span>
+          <ng-template #noCategory>
+            <span>Select an option</span>
+          </ng-template>
+          <i class="arrow" [class.open]="dropdownStates['category']">▼</i>
+        </div>
 
-    <span class="text-[#696868] mt-2">Budget Category</span>
-    <div class="custom-dropdown-container mb-2">
-      <div class="dropdown-selected" (click)="toggleDropdown('category')">
-        <span *ngIf="selectedCategory; else noCategory">
-          {{ selectedCategory.category }}
-        </span>
-        <ng-template #noCategory>
-          <span>Select an option</span>
-        </ng-template>
-        <i class="arrow" [class.open]="dropdownStates['category']">▼</i>
-      </div>
-
-      <div *ngIf="dropdownStates['category']" class="dropdown-list">
-        <div
-          *ngFor="let option of allCategoriesWithStatus()"
-          class="dropdown-item flex justify-between"
-          (click)="!option.alreadyUsed && selectOption('category', option)"
-          [ngClass]="{ 'not-selectable': option.alreadyUsed }"
-        >
-          <div>{{ option.category }}</div>
-          <span *ngIf="option.alreadyUsed">Already in use</span>
+        <div *ngIf="dropdownStates['category']" class="dropdown-list">
+          <div
+            *ngFor="let option of allCategoriesWithStatus()"
+            class="dropdown-item flex justify-between"
+            (click)="!option.alreadyUsed && selectOption('category', option)"
+            [ngClass]="{ 'not-selectable': option.alreadyUsed }"
+          >
+            <div>{{ option.category }}</div>
+            <span *ngIf="option.alreadyUsed">Already in use</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <span class="text-[#696868] mt-2">Maximum Spend</span>
-    <div>
-      <input
-        class="max-speed"
-        type="number"
-        [value]="selectedCategory ? selectedCategory.amount : ''"
-        (input)="formatNumber($event)"
-      />
-    </div>
-
-    <span class="text-[#696868] mt-2">Theme</span>
-    <div class="custom-dropdown-container theme mb-2">
-      <div
-        class="dropdown-selected"
-        [ngClass]="{ 'not-selectable': dropdownDisabled }"
-        (click)="!dropdownDisabled && toggleDropdown('theme')"
-      >
-        <span *ngIf="selectedTheme" class="theme-selection">
-          <span
-            class="circle"
-            [ngStyle]="{ backgroundColor: selectedTheme }"
-          ></span>
-          {{ getColorName() }}
-        </span>
-        <span *ngIf="!selectedTheme">Select an option</span>
-        <i class="arrow" [class.open]="dropdownStates['theme']">▼</i>
+      <span class="text-[#696868] mt-2">Maximum Spend</span>
+      <div>
+        <input
+          class="max-speed"
+          type="number"
+          [value]="selectedCategory ? selectedCategory.amount : ''"
+          (input)="formatNumber($event)"
+        />
       </div>
 
-      <div *ngIf="dropdownStates['theme']" class="dropdown-list">
+      <span class="text-[#696868] mt-2">Theme</span>
+      <div class="custom-dropdown-container theme mb-2">
         <div
-          *ngFor="let option of budgets"
-          class="dropdown-item flex justify-between"
-          (click)="!option.alreadyUsed && selectOption('theme', option)"
-          [ngClass]="{
-            'not-selectable': budgetColors[option.theme]
-          }"
+          class="dropdown-selected"
+          [ngClass]="{ 'not-selectable': dropdownDisabled }"
+          (click)="!dropdownDisabled && toggleDropdown('theme')"
         >
-          <div>
+          <span *ngIf="selectedTheme" class="theme-selection">
             <span
               class="circle"
-              [ngStyle]="{ backgroundColor: option.theme }"
+              [ngStyle]="{ backgroundColor: selectedTheme }"
             ></span>
-            <span>{{ option.color }}</span>
-          </div>
-          @if (budgetColors[option.category]) {
-          <span>Already in use</span>
-          }
+            {{ getColorName() }}
+          </span>
+          <span *ngIf="!selectedTheme">Select an option</span>
+          <i class="arrow" [class.open]="dropdownStates['theme']">▼</i>
         </div>
-      </div>
-    </div>
-    <button
-      class="mt-[20px] w-[100%] py-[14px] bg-[#201F24] text-white rounded-lg"
-      (click)="addBudget()"
-    >
-      Add Budget
-    </button>
-    } @else if(title === 'Edit Budget') {
-    <span class="text-[#696868] mt-2">Budget Category</span>
-    <div class="custom-dropdown-container theme mb-3">
-      <div class="dropdown-selected" (click)="toggleDropdown('category')">
-        <span>{{
-          selectedCategory ? selectedCategory.category : selectedBudget.category
-        }}</span>
-        <i class="arrow" [class.open]="dropdownStates['category']">▼</i>
-      </div>
 
-      <div *ngIf="dropdownStates['category']" class="dropdown-list">
-        <div
-          *ngFor="let option of allCategoriesWithStatus()"
-          class="dropdown-item flex justify-between"
-          (click)="!option.alreadyUsed && selectOption('category', option)"
-          [ngClass]="{ 'not-selectable': option.alreadyUsed }"
-        >
-          <span>{{ option.category }}</span>
-          <span *ngIf="option.alreadyUsed">Already in use</span>
-        </div>
-      </div>
-    </div>
-    <span class="text-[#696868] mt-2">Maximum Spend</span>
-    <div>
-      <input
-        #amountInput
-        class="max-speed"
-        type="number"
-        [value]="selectedBudget.amount"
-        (input)="formatNumber($event)"
-      />
-    </div>
-
-    <span class="text-[#696868] mt-2">Theme</span>
-    <div class="custom-dropdown-container theme mb-2">
-      <div
-        class="dropdown-selected"
-        [ngClass]="{ 'not-selectable': dropdownDisabled }"
-        (click)="(null)"
-      >
-        <span *ngIf="selectedTheme" class="theme-selection">
-          <span
-            class="circle"
-            [ngStyle]="{
-              backgroundColor:
-                selectedTheme ||
-                selectedCategory?.theme ||
-                selectedBudget?.theme
+        <div *ngIf="dropdownStates['theme']" class="dropdown-list">
+          <div
+            *ngFor="let option of budgets"
+            class="dropdown-item flex justify-between"
+            (click)="!option.alreadyUsed && selectOption('theme', option)"
+            [ngClass]="{
+              'not-selectable': budgetColors[option.theme],
             }"
-          ></span>
-          {{ getColorName() }}
-        </span>
-        <div *ngIf="!selectedTheme && selectedBudget">
-          <span
-            class="circle"
-            [ngStyle]="{ backgroundColor: selectedBudget.theme }"
-          ></span>
-          <span>{{ selectedBudget.color }}</span>
-        </div>
-
-        <i class="arrow" [class.open]="dropdownStates['theme']">▼</i>
-      </div>
-
-      <div *ngIf="dropdownStates['theme']" class="dropdown-list">
-        <div
-          *ngFor="let option of budgets"
-          class="dropdown-item flex justify-between"
-        >
-          <div>
-            <span
-              class="circle"
-              [ngStyle]="{ backgroundColor: option.theme }"
-            ></span>
-            <span>{{ option.color }}</span>
+          >
+            <div>
+              <span
+                class="circle"
+                [ngStyle]="{ backgroundColor: option.theme }"
+              ></span>
+              <span>{{ option.color }}</span>
+            </div>
+            @if (budgetColors[option.category]) {
+              <span>Already in use</span>
+            }
           </div>
         </div>
       </div>
-    </div>
-    <button
-      class="mt-[20px] w-[100%] py-[14px] bg-[#201F24] text-white rounded-lg"
-      (click)="updateBudget()"
-    >
-      Save Changes
-    </button>
+      <button
+        class="mt-[20px] w-[100%] py-[14px] bg-[#201F24] text-white rounded-lg"
+        (click)="addBudget()"
+      >
+        Add Budget
+      </button>
+    } @else if (title === "Edit Budget") {
+      <span class="text-[#696868] mt-2">Budget Category</span>
+      <div class="custom-dropdown-container theme mb-3">
+        <div class="dropdown-selected" (click)="toggleDropdown('category')">
+          <span>{{
+            selectedCategory
+              ? selectedCategory.category
+              : selectedBudget.category
+          }}</span>
+          <i class="arrow" [class.open]="dropdownStates['category']">▼</i>
+        </div>
+
+        <div *ngIf="dropdownStates['category']" class="dropdown-list">
+          <div
+            *ngFor="let option of allCategoriesWithStatus()"
+            class="dropdown-item flex justify-between"
+            (click)="!option.alreadyUsed && selectOption('category', option)"
+            [ngClass]="{ 'not-selectable': option.alreadyUsed }"
+          >
+            <span>{{ option.category }}</span>
+            <span *ngIf="option.alreadyUsed">Already in use</span>
+          </div>
+        </div>
+      </div>
+      <span class="text-[#696868] mt-2">Maximum Spend</span>
+      <div>
+        <input
+          #amountInput
+          class="max-speed"
+          type="number"
+          [value]="selectedBudget.amount"
+          (input)="formatNumber($event)"
+        />
+      </div>
+
+      <span class="text-[#696868] mt-2">Theme</span>
+      <div class="custom-dropdown-container theme mb-2">
+        <div
+          class="dropdown-selected"
+          [ngClass]="{ 'not-selectable': dropdownDisabled }"
+          (click)="(null)"
+        >
+          <span *ngIf="selectedTheme" class="theme-selection">
+            <span
+              class="circle"
+              [ngStyle]="{
+                backgroundColor:
+                  selectedTheme ||
+                  selectedCategory?.theme ||
+                  selectedBudget?.theme,
+              }"
+            ></span>
+            {{ getColorName() }}
+          </span>
+          <div *ngIf="!selectedTheme && selectedBudget">
+            <span
+              class="circle"
+              [ngStyle]="{ backgroundColor: selectedBudget.theme }"
+            ></span>
+            <span>{{ selectedBudget.color }}</span>
+          </div>
+
+          <i class="arrow" [class.open]="dropdownStates['theme']">▼</i>
+        </div>
+
+        <div *ngIf="dropdownStates['theme']" class="dropdown-list">
+          <div
+            *ngFor="let option of budgets"
+            class="dropdown-item flex justify-between"
+          >
+            <div>
+              <span
+                class="circle"
+                [ngStyle]="{ backgroundColor: option.theme }"
+              ></span>
+              <span>{{ option.color }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        class="mt-[20px] w-[100%] py-[14px] bg-[#201F24] text-white rounded-lg"
+        (click)="updateBudget()"
+      >
+        Save Changes
+      </button>
     }
   </div>
 </div>

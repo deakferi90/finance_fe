@@ -49,7 +49,7 @@ export class PotsComponent implements OnInit {
     private potsService: PotsService,
     private cdr: ChangeDetectorRef,
     private toastr: ToastrService,
-    private potsSharedService: PotsSharedService
+    private potsSharedService: PotsSharedService,
   ) {}
 
   ngOnInit(): void {
@@ -186,9 +186,8 @@ export class PotsComponent implements OnInit {
         this.isModalVisible = false;
         this.selectedPotId = null;
 
-        // ✅ Notify modal to recalc themes
-        this.potsModal.allPots = this.pots; // update the modal's allPots
-        this.potsModal.updateThemeUsage(); // refresh theme usage
+        this.potsModal.allPots = this.pots;
+        this.potsModal.updateThemeUsage();
       },
       error: (err) => {
         console.error('Error deleting pot:', err);
@@ -208,7 +207,7 @@ export class PotsComponent implements OnInit {
         if (menu.nativeElement.contains(event.target)) {
           clickedInside = true;
         }
-      }
+      },
     );
 
     if (!clickedInside && this.openDropDownIndex !== null) {

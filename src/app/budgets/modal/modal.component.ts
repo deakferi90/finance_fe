@@ -77,7 +77,7 @@ export class ModalComponent implements OnInit {
   constructor(
     private modalService: ModalService,
     private toastr: ToastrService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -158,7 +158,7 @@ export class ModalComponent implements OnInit {
     return this.allCategories.map((cat) => {
       const isUsed = this.budgets.some(
         (b: { category: string; optional: any }) =>
-          b.category === cat.category && !b.optional
+          b.category === cat.category && !b.optional,
       );
       return { ...cat, alreadyUsed: isUsed };
     });
@@ -187,7 +187,7 @@ export class ModalComponent implements OnInit {
       this.selectedCategory = option;
 
       const selectedCategoryOption = this.allCategories.find(
-        (cat) => cat.category === option.category
+        (cat) => cat.category === option.category,
       );
 
       if (selectedCategoryOption) {
@@ -215,7 +215,7 @@ export class ModalComponent implements OnInit {
 
   updateBudget() {
     const maxSpeedInput = document.querySelector(
-      '.max-speed'
+      '.max-speed',
     ) as HTMLInputElement;
     const inputValue = maxSpeedInput?.value;
 
@@ -238,7 +238,7 @@ export class ModalComponent implements OnInit {
         this.selectedBudget = { ...this.selectedBudget, ...response };
 
         this.budgets = this.budgets.map((budget: { id: number }) =>
-          budget.id === response.id ? { ...budget, ...response } : budget
+          budget.id === response.id ? { ...budget, ...response } : budget,
         );
 
         this.modalService
@@ -256,14 +256,14 @@ export class ModalComponent implements OnInit {
       (error) => {
         this.toastr.error('Error updating budget');
         console.error('Update failed:', error);
-      }
+      },
     );
   }
 
   close() {
     this.selectedCategory =
       this.initialBudgets.find(
-        (budget) => budget.category === this.selectedCategory?.category
+        (budget) => budget.category === this.selectedCategory?.category,
       ) || null;
 
     this.selectedTheme = this.selectedCategory
@@ -286,7 +286,7 @@ export class ModalComponent implements OnInit {
 
   addBudget() {
     const selAmountInput = document.querySelector(
-      '.max-speed'
+      '.max-speed',
     ) as HTMLInputElement | null;
 
     if (!this.selectedCategory) {
@@ -312,7 +312,7 @@ export class ModalComponent implements OnInit {
         if (!response) return;
 
         const existingIndex = this.budgets.findIndex(
-          (b: { id: number }) => b.id === response.id
+          (b: { id: number }) => b.id === response.id,
         );
         if (existingIndex > -1) {
           this.budgets[existingIndex] = response;
@@ -321,7 +321,7 @@ export class ModalComponent implements OnInit {
         }
 
         this.filteredBudgets = this.budgets.filter(
-          (b: { optional: boolean }) => !b.optional
+          (b: { optional: boolean }) => !b.optional,
         );
 
         this.budgetColors[response.category] = response.theme;
@@ -349,10 +349,10 @@ export class ModalComponent implements OnInit {
       const deletedId = this.selectedBudget.id;
 
       this.budgets = this.budgets.filter(
-        (b: { id: number }) => b.id !== deletedId
+        (b: { id: number }) => b.id !== deletedId,
       );
       this.filteredBudgets = this.filteredBudgets.filter(
-        (b) => b.id !== deletedId
+        (b) => b.id !== deletedId,
       );
 
       if (this.budgetColors[this.selectedBudget.category]) {

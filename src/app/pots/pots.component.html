@@ -1,80 +1,83 @@
 <div class="text-right mt-[-50px]">
   @if (showAddButton) {
-  <button
-    (click)="addPot()"
-    class="add-pots p-[14px] color-[#fff] bg-black hover:bg-gray-800"
-  >
-    +Add New Pot
-  </button>
+    <button
+      (click)="addPot()"
+      class="add-pots p-[14px] color-[#fff] bg-black hover:bg-gray-800"
+    >
+      +Add New Pot
+    </button>
   }
 </div>
 <div class="pots-container">
-  @for (pot of pots; track pot._id) { @if(showPotsBox) {
-  <div class="pot-box">
-    <div class="flex items-center justify-between text-[24px] p-5">
-      <div class="flex items-center gap-3">
-        <div
-          class="w-6 h-6 rounded-full"
-          [style.background-color]="pot.theme"
-        ></div>
-        <div class="font-bold text-gray-800">{{ pot.name }}</div>
+  @for (pot of pots; track pot._id) {
+    @if (showPotsBox) {
+      <div class="pot-box">
+        <div class="flex items-center justify-between text-[24px] p-5">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-6 h-6 rounded-full"
+              [style.background-color]="pot.theme"
+            ></div>
+            <div class="font-bold text-gray-800">{{ pot.name }}</div>
+          </div>
+          <div class="relative cursor-pointer hover:opacity-80">
+            <img
+              src="{{ dotsUrl }}"
+              #menuContainer
+              (click)="toggleMenu(pot.id)"
+              class="dots-img"
+              [src]="dotsUrl"
+              alt="dots"
+            />
+          </div>
+        </div>
+        <div class="list-items-container-parent relative">
+          <ul
+            *ngIf="openDropDownIndex === pot.id"
+            class="list-items-container w-fit p-[10px] bg-white border border-gray-300 rounded-[10px] absolute right-0 -top-5 z-[1]"
+          >
+            <li
+              (click)="openEditPotModal(pot)"
+              class="pb-2 border-b border-gainsboro hover:cursor-pointer"
+            >
+              Edit Pot
+            </li>
+            <li
+              (click)="openDeletePotModal(pot)"
+              class="text-[#C94736] pt-2 hover:cursor-pointer"
+            >
+              Delete Pot
+            </li>
+          </ul>
+        </div>
+        <div class="total-saved">
+          <span class="saved-txt">Total saved</span>
+          <span class="saved-price">${{ pot.total.toFixed(2) }}</span>
+        </div>
+        <mat-progress-bar
+          mode="buffer"
+          class="progress-bar-wrapper"
+          [style.--color]="pot.theme"
+          [value]="pot.animatedValue"
+          [ngStyle]="{
+            height: progressBarHeight,
+            'border-radius': '5px',
+            '--mdc-linear-progress-active-indicator-color': pot.theme,
+          }"
+        ></mat-progress-bar>
+        <div class="total-saved">
+          <span class="saved-txt"
+            >{{ ((pot.total / pot.target) * 100).toFixed(2) }}%</span
+          >
+          <span class="saved-txt">Target of ${{ pot.target.toFixed(2) }}</span>
+        </div>
       </div>
-      <div class="relative cursor-pointer hover:opacity-80">
-        <img
-          src="{{ dotsUrl }}"
-          #menuContainer
-          (click)="toggleMenu(pot.id)"
-          class="dots-img"
-          [src]="dotsUrl"
-          alt="dots"
-        />
-      </div>
-    </div>
-    <div class="list-items-container-parent relative">
-      <ul
-        *ngIf="openDropDownIndex === pot.id"
-        class="list-items-container w-fit p-[10px] bg-white border border-gray-300 rounded-[10px] absolute right-0 -top-5 z-[1]"
-      >
-        <li
-          (click)="openEditPotModal(pot)"
-          class="pb-2 border-b border-gainsboro hover:cursor-pointer"
-        >
-          Edit Pot
-        </li>
-        <li
-          (click)="openDeletePotModal(pot)"
-          class="text-[#C94736] pt-2 hover:cursor-pointer"
-        >
-          Delete Pot
-        </li>
-      </ul>
-    </div>
-    <div class="total-saved">
-      <span class="saved-txt">Total saved</span>
-      <span class="saved-price">${{ pot.total.toFixed(2) }}</span>
-    </div>
-    <mat-progress-bar
-      mode="buffer"
-      class="progress-bar-wrapper"
-      [style.--color]="pot.theme"
-      [value]="pot.animatedValue"
-      [ngStyle]="{
-        height: progressBarHeight,
-        'border-radius': '5px',
-        '--mdc-linear-progress-active-indicator-color': pot.theme
-      }"
-    ></mat-progress-bar>
-    <div class="total-saved">
-      <span class="saved-txt"
-        >{{ ((pot.total / pot.target) * 100).toFixed(2) }}%</span
-      >
-      <span class="saved-txt">Target of ${{ pot.target.toFixed(2) }}</span>
-    </div>
-  </div>
-  } }
+    }
+  }
 </div>
 <app-potsmodal
   (confirmDelete)="confirmDeletePot()"
+  [allPots]="pots"
   (closeModal)="closeModal()"
   (potUpdated)="onEditPot($event)"
   (addNewPot)="onAddNewPot($event)"

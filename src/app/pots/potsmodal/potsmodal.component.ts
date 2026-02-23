@@ -23,13 +23,13 @@ export class PotsmodalComponent implements OnInit, OnChanges {
   @Input() selectedPot!: Pots;
   @Input() selectedPotName: string = '';
   @Input() mode: 'edit' | 'delete' | 'add' = 'delete';
+  @Input() allPots: Pots[] = [];
 
   @Output() closeModal = new EventEmitter<void>();
   @Output() confirmDelete = new EventEmitter<void>();
   @Output() potUpdated = new EventEmitter<Pots>();
   @Output() addNewPot = new EventEmitter<Pots>();
 
-  allPots: Pots[] = [];
   isThemeDropdownOpen = false;
 
   addPot: Pots = {
@@ -94,55 +94,7 @@ export class PotsmodalComponent implements OnInit, OnChanges {
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.allPots = [
-      {
-        id: 1,
-        name: 'Savings',
-        target: 2000,
-        total: 159,
-        theme: '#277C78',
-        themeColor: '#277C78',
-        _id: '',
-      },
-      {
-        id: 2,
-        name: 'Concert Ticket',
-        target: 150,
-        total: 110,
-        theme: '#626070',
-        themeColor: '#626070',
-        _id: '',
-      },
-      {
-        id: 3,
-        name: 'Gift',
-        target: 150,
-        total: 110,
-        theme: '#82C9D7',
-        themeColor: '#82C9D7',
-        _id: '',
-      },
-      {
-        id: 4,
-        name: 'New Laptop',
-        target: 1000,
-        total: 10,
-        theme: '#F2CDAC',
-        themeColor: '#F2CDAC',
-        _id: '',
-      },
-      {
-        id: 5,
-        name: 'Holiday',
-        target: 1440,
-        total: 531,
-        theme: '#826CB0',
-        themeColor: '#826CB0',
-        _id: '',
-      },
-    ];
-  }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['selectedPot'] && this.selectedPot) {
@@ -155,7 +107,7 @@ export class PotsmodalComponent implements OnInit, OnChanges {
       const isUsed = this.allPots.some(
         (pot) =>
           pot.theme === theme.value &&
-          (!this.editPot || pot.id !== this.editPot.id)
+          (!this.editPot || pot.id !== this.editPot.id),
       );
       return { ...theme, alreadyUsed: isUsed };
     });
@@ -168,7 +120,7 @@ export class PotsmodalComponent implements OnInit, OnChanges {
   updateThemeUsage() {
     this.themes = this.themes.map((theme) => {
       const isUsed = this.allPots.some(
-        (pot) => pot.theme === theme.value && pot.id !== this.editPot.id
+        (pot) => pot.theme === theme.value && pot.id !== this.editPot.id,
       );
       return { ...theme, alreadyUsed: isUsed };
     });

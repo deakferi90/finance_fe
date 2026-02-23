@@ -6,14 +6,13 @@
           mode === "delete"
             ? "Delete '" + selectedPotName + "'"
             : mode === "edit"
-            ? "Edit '" + selectedPotName + "'"
-            : "Add New Pot"
+              ? "Edit '" + selectedPotName + "'"
+              : "Add New Pot"
         }}
       </h1>
       <button (click)="close()" class="text-lg font-bold">✕</button>
     </div>
 
-    <!-- DELETE MODE -->
     <ng-container *ngIf="mode === 'delete'">
       <p class="text-gray-600 mb-4">
         Are you sure you want to delete this pot? This action cannot be
@@ -33,7 +32,6 @@
       </button>
     </ng-container>
 
-    <!-- EDIT MODE -->
     <ng-container *ngIf="mode === 'edit'">
       <p class="text-gray-600 mb-4">Update your pot details below.</p>
       <form class="space-y-3">
@@ -109,7 +107,6 @@
       </button>
     </ng-container>
 
-    <!-- ADD MODE -->
     <ng-container *ngIf="mode === 'add'">
       <p class="text-gray-600 mb-4">
         Create a new pot to set your savings target.
