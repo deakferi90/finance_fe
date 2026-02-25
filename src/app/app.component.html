@@ -1,10 +1,12 @@
-<div *ngIf="showLayout" class="layout-container">
-  <app-sidenav
-    [class.open]="showFiller === 'closed'"
-    [showFiller]="showFiller"
-  ></app-sidenav>
-</div>
-
-<div *ngIf="!showLayout">
-  <router-outlet></router-outlet>
-</div>
+@if (showLayout) {
+  <div class="layout-container">
+    <app-sidenav
+      [class.open]="showFiller === 'closed'"
+      [showFiller]="showFiller"
+    ></app-sidenav>
+  </div>
+} @else {
+  <div>
+    <router-outlet></router-outlet>
+  </div>
+}
