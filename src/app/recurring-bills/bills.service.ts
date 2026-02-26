@@ -2,12 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { recurringBills } from './recurringBills.interface';
 import { map, Observable } from 'rxjs';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BillsService {
-  billsUrl = 'http://localhost:3000/api/recurringBills';
+  billsUrl = `${environment.apiUrl}/recurringBills`;
+
   constructor(private http: HttpClient) {}
 
   getBillsTotalValue() {
@@ -30,9 +32,9 @@ export class BillsService {
             else if (bill.status === 'neutral') acc.neutral += bill.amount;
             return acc;
           },
-          { ok: 0, bad: 0, neutral: 0, all: 0 }
-        )
-      )
+          { ok: 0, bad: 0, neutral: 0, all: 0 },
+        ),
+      ),
     );
   }
 }

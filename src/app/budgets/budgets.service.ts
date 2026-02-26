@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
 import { Budget } from './budgets.interface';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BudgetsService {
-  private budgetsUrl = 'http://localhost:3000/api/budgets';
-  private transactionsUrl = 'http://localhost:3000/api/transactions';
+  private budgetsUrl = `${environment.apiUrl}/api/budgets`;
+  private transactionsUrl = `${environment.apiUrl}/api/transactions`;
 
   constructor(private http: HttpClient) {}
 

@@ -2,12 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Pots } from './pots.interface';
 import { catchError, Observable, of } from 'rxjs';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PotsService {
-  potsUrl = 'http://localhost:3000/api/pots';
+  potsUrl = `${environment.apiUrl}/pots`;
+
   constructor(private http: HttpClient) {}
 
   getPots(): Observable<any[]> {

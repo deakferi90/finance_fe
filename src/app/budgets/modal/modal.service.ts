@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Budget } from '../budgets.interface';
+import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ModalService {
-  private apiUrl = 'http://localhost:3000/api/budgets';
+  private apiUrl = `${environment.apiUrl}/budgets`;
 
   constructor(private http: HttpClient) {}
 
@@ -21,14 +22,14 @@ export class ModalService {
       catchError((err) => {
         console.error('Error adding budget:', err);
         return of(null);
-      })
+      }),
     );
   }
 
   updateBudget(updatedBudget: Budget): Observable<Budget> {
     return this.http.put<Budget>(
       `${this.apiUrl}/${updatedBudget.id}`,
-      updatedBudget
+      updatedBudget,
     );
   }
 
@@ -37,7 +38,7 @@ export class ModalService {
       catchError((err) => {
         console.error('Error deleting budget:', err);
         return of(null);
-      })
+      }),
     );
   }
 }
