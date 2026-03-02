@@ -8,8 +8,8 @@ import { environment } from '../../environments/environment.prod';
   providedIn: 'root',
 })
 export class BudgetsService {
-  private budgetsUrl = `${environment.apiUrl}/api/budgets`;
-  private transactionsUrl = `${environment.apiUrl}/api/transactions`;
+  private budgetsUrl = `http://localhost:3000/api/budgets`;
+  private transactionsUrl = `http://localhost:3000/api/transactions`;
 
   constructor(private http: HttpClient) {}
 

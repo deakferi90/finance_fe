@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment.prod';
   providedIn: 'root',
 })
 export class PotsService {
-  potsUrl = `${environment.apiUrl}/pots`;
+  potsUrl = `http://localhost:3000/api/pots`;
 
   constructor(private http: HttpClient) {}
 

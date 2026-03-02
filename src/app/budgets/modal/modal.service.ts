@@ -9,7 +9,7 @@ import { environment } from '../../../environments/environment.prod';
   providedIn: 'root',
 })
 export class ModalService {
-  private apiUrl = `${environment.apiUrl}/budgets`;
+  private apiUrl = `http://localhost:3000/api/budgets`;
 
   constructor(private http: HttpClient) {}
 

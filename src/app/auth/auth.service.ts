@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment.prod';
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = `${environment.apiUrl}/auth`;
+  private baseUrl = `http://localhost:3000/api/auth`;
 
   constructor(
     private http: HttpClient,

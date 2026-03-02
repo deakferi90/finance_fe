@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment.prod';
   providedIn: 'root',
 })
 export class BillsService {
-  billsUrl = `${environment.apiUrl}/recurringBills`;
+  billsUrl = `http://localhost:3000/api/recurringBills`;
 
   constructor(private http: HttpClient) {}
 
