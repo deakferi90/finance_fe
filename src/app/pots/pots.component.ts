@@ -141,24 +141,6 @@ export class PotsComponent implements OnInit {
     this.isModalVisible = false;
   }
 
-  // onEditPot(updatedPot: Pots) {
-  //   if (!updatedPot._id) {
-  //     console.error('Error: Pot ID is missing');
-  //     return;
-  //   }
-
-  //   this.potsService.updatePot(String(updatedPot._id), updatedPot).subscribe({
-  //     next: () => {
-  //       this.toastr.success('Pot updated successfully!');
-  //       this.closeModal();
-  //     },
-  //     error: (err) => {
-  //       console.error('Error updating pot:', err);
-  //       this.toastr.error('Failed to update pot');
-  //     },
-  //   });
-  // }
-
   onEditPot(updatedPot: Pots) {
     if (!updatedPot._id) return;
 
