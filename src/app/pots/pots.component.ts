@@ -141,15 +141,41 @@ export class PotsComponent implements OnInit {
     this.isModalVisible = false;
   }
 
+  // onEditPot(updatedPot: Pots) {
+  //   if (!updatedPot._id) {
+  //     console.error('Error: Pot ID is missing');
+  //     return;
+  //   }
+
+  //   this.potsService.updatePot(String(updatedPot._id), updatedPot).subscribe({
+  //     next: () => {
+  //       this.toastr.success('Pot updated successfully!');
+  //       this.closeModal();
+  //     },
+  //     error: (err) => {
+  //       console.error('Error updating pot:', err);
+  //       this.toastr.error('Failed to update pot');
+  //     },
+  //   });
+  // }
+
   onEditPot(updatedPot: Pots) {
-    if (!updatedPot._id) {
-      console.error('Error: Pot ID is missing');
-      return;
-    }
+    if (!updatedPot._id) return;
 
     this.potsService.updatePot(String(updatedPot._id), updatedPot).subscribe({
-      next: () => {
-        this.getPotsData();
+      next: (response) => {
+        this.pots = this.pots.map((pot) =>
+          pot._id === response._id ? { ...pot, ...response } : pot,
+        );
+
+        const target = this.calculatePercentageValue(
+          this.pots.find((p) => p._id === response._id)!,
+        );
+        this.animateProgress(
+          this.pots.find((p) => p._id === response._id)!,
+          target,
+        );
+
         this.toastr.success('Pot updated successfully!');
         this.closeModal();
       },
