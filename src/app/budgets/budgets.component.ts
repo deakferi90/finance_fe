@@ -85,7 +85,7 @@ export class BudgetsComponent implements OnInit, AfterViewInit, OnChanges {
     private cdr: ChangeDetectorRef,
     private toastr: ToastrService,
     private budgetService: BudgetsService,
-    private potsSharedService: PotsSharedService
+    private potsSharedService: PotsSharedService,
   ) {}
 
   ngOnInit(): void {
@@ -179,13 +179,13 @@ export class BudgetsComponent implements OnInit, AfterViewInit, OnChanges {
 
   budgetSelected(updatedBudget: Budget) {
     this.filteredBudgets = this.filteredBudgets.map((budget) =>
-      budget.id === updatedBudget.id ? { ...budget, ...updatedBudget } : budget
+      budget.id === updatedBudget.id ? { ...budget, ...updatedBudget } : budget,
     );
   }
 
   getVisibleTransactions(category: string): Transaction[] {
     const filteredTransactions = this.transactions.filter(
-      (item) => item.category === category
+      (item) => item.category === category,
     );
     return this.selectedCategory === category
       ? filteredTransactions
@@ -221,7 +221,7 @@ export class BudgetsComponent implements OnInit, AfterViewInit, OnChanges {
         this.transactions = data.transactions;
 
         this.filteredBudgets = this.budgets.filter(
-          (budget: Budget) => !budget.optional
+          (budget: Budget) => !budget.optional,
         );
 
         this.recalculateSpentValues();
@@ -240,17 +240,17 @@ export class BudgetsComponent implements OnInit, AfterViewInit, OnChanges {
     this.budgetService.updateBudget(budgetIdNumber, updatedData).subscribe(
       (response) => {
         this.budgets = this.budgets.map((budget: { id: any }) =>
-          budget.id === response.id ? { ...budget, ...response } : budget
+          budget.id === response.id ? { ...budget, ...response } : budget,
         );
 
         this.filteredBudgets = this.budgets.filter(
-          (budget: { optional: any }) => !budget.optional
+          (budget: { optional: any }) => !budget.optional,
         );
 
         this.budgets = [
           ...new Set(this.budgets.map((budget: { id: any }) => budget.id)),
         ].map((id) =>
-          this.budgets.find((budget: { id: unknown }) => budget.id === id)
+          this.budgets.find((budget: { id: unknown }) => budget.id === id),
         );
 
         this.recalculateSpentValues();
@@ -263,7 +263,7 @@ export class BudgetsComponent implements OnInit, AfterViewInit, OnChanges {
       },
       (error) => {
         console.error('Error updating budget:', error);
-      }
+      },
     );
   }
 
@@ -279,14 +279,14 @@ export class BudgetsComponent implements OnInit, AfterViewInit, OnChanges {
     this.budgetService.deleteBudget(budgetId).subscribe({
       next: () => {
         const deletedBudget = this.budgets.find(
-          (b: { id: number }) => b.id === budgetId
+          (b: { id: number }) => b.id === budgetId,
         );
 
         this.budgets = this.budgets.filter(
-          (b: { id: number }) => b.id !== budgetId
+          (b: { id: number }) => b.id !== budgetId,
         );
         this.filteredBudgets = this.filteredBudgets.filter(
-          (b) => b.id !== budgetId
+          (b) => b.id !== budgetId,
         );
 
         if (deletedBudget && this.budgetColors[deletedBudget.category]) {
@@ -295,7 +295,7 @@ export class BudgetsComponent implements OnInit, AfterViewInit, OnChanges {
 
         this.budgets.sort((a: Budget, b: Budget) => a.id - b.id);
         this.filteredBudgets = this.budgets.filter(
-          (b: { optional: boolean }) => !b.optional
+          (b: { optional: boolean }) => !b.optional,
         );
 
         this.recalculateSpentValues();
@@ -341,7 +341,7 @@ export class BudgetsComponent implements OnInit, AfterViewInit, OnChanges {
 
   recalculateSpentValues() {
     this.spent = this.filteredBudgets.map((b) =>
-      Math.abs(this.calculateTotalSpent(b))
+      Math.abs(this.calculateTotalSpent(b)),
     );
 
     Promise.resolve().then(() => {
@@ -357,6 +357,12 @@ export class BudgetsComponent implements OnInit, AfterViewInit, OnChanges {
       console.warn('Retrying in 100ms...');
     }
   }
+
+  getRemainingFormatted(budget: any): string {
+    const value = this.calculateRemainingAmount(budget);
+    return value < 0 ? '$0.00' : '$' + value.toFixed(2);
+  }
+
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
     let clickedInside = false;
